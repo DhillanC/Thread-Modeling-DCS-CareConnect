@@ -49,25 +49,18 @@ With access to the DCS Health 360 application, the attacker can exfiltrate sensi
 
 ```mermaid
 flowchart LR
-    A[Reconnaissance<br/>OSINT on DCS staff,<br/>LinkedIn, GitHub repos] -->|Identify admin targets| B[Weaponization<br/>AI-generated phishing<br/>+ payload]
-    B -->|Craft malicious link / attachment| C[Delivery<br/>Spear-phishing email<br/>to DCS admin]
-    C -->|User clicks link / opens attachment| D[Exploitation<br/>Credential harvest<br/>or browser RCE]
-    D -->|Valid AWS / app admin creds| E[Installation<br/>Backdoor user,<br/>persistence on backend]
-    E -->|Outbound C2 channel established| F[Command & Control<br/>HTTPS beacon to attacker C2]
-    F -->|Issue commands<br/>lateral movement| G[Actions on Objectives<br/>Exfil PHI,<br/>manipulate records,<br/>deploy ransomware]
+    style Reconnaissance fill:#0037b8,stroke:#000,stroke-width:2px,color:#fff
+    style Weaponization fill:#F5B041,stroke:#000,stroke-width:2px
+    style Delivery fill:#EB984E,stroke:#000,stroke-width:2px
+    style Exploitation fill:#E59866,stroke:#000,stroke-width:2px
+    style Installation fill:#DC7633,stroke:#000,stroke-width:2px
+    style Command_Control fill:#CA6F1E,stroke:#000,stroke-width:2px,color:#fff
+    style Actions_Objectives fill:#BA4A00,stroke:#000,stroke-width:2px,color:#fff
 
-    classDef recon fill:#0037b8,stroke:#000,color:#fff;
-    classDef weap fill:#F5B041,stroke:#000;
-    classDef deliv fill:#EB984E,stroke:#000;
-    classDef expl fill:#E59866,stroke:#000;
-    classDef install fill:#DC7633,stroke:#000;
-    classDef c2 fill:#CA6F1E,stroke:#000,color:#fff;
-    classDef act fill:#BA4A00,stroke:#000,color:#fff;
-    class A recon;
-    class B weap;
-    class C deliv;
-    class D expl;
-    class E install;
-    class F c2;
-    class G act;
+    Reconnaissance[Reconnaissance] -->|Identify admin targets| Weaponization[Weaponization]
+    Weaponization[Weaponization] -->|Craft malicious link or attachment| Delivery[Delivery]
+    Delivery[Delivery] -->|User clicks link, opens attachment| Exploitation[Exploitation]
+    Exploitation[Exploitation] -->|Valid AWS or app admin creds| Installation[Installation]
+    Installation[Installation] -->|Outbound C2 channel established| Command_Control[Command and Control]
+    Command_Control[Command and Control] -->|Issue commands, lateral movement| Actions_Objectives[Actions on Objectives]
 ```

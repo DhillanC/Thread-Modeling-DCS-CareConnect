@@ -22,11 +22,18 @@ Why this scenario matters: SQLi is still in the OWASP Top 10 (A03:2021 — Injec
 
 ```mermaid
 flowchart LR
-    A[Recon<br/>Fuzz inputs,<br/>fingerprint stack] -->|Find vulnerable param| B[Initial Access<br/>SQLi confirmed]
-    B -->|UNION-based discovery| C[Discovery<br/>Schema enumerated]
-    C -->|SELECT clinical data| D[Collection]
-    D -->|Stream rows via HTTP responses| E[Exfiltration]
-    C -->|UPDATE / DELETE| F[Impact<br/>integrity loss,<br/>audit tampering]
+    style Recon fill:#0037b8,stroke:#000,stroke-width:2px,color:#fff
+    style InitialAccess fill:#F5B041,stroke:#000,stroke-width:2px
+    style Discovery fill:#EB984E,stroke:#000,stroke-width:2px
+    style Collection fill:#DC7633,stroke:#000,stroke-width:2px
+    style Exfiltration fill:#CA6F1E,stroke:#000,stroke-width:2px,color:#fff
+    style Impact fill:#8a0111,stroke:#000,stroke-width:2px,color:#fff
+
+    Recon[Recon: fuzz inputs, fingerprint stack] -->|Find vulnerable param| InitialAccess[Initial Access: SQLi confirmed]
+    InitialAccess -->|UNION-based discovery| Discovery[Discovery: schema enumerated]
+    Discovery -->|SELECT clinical data| Collection[Collection]
+    Collection -->|Stream rows via HTTP responses| Exfiltration[Exfiltration]
+    Discovery -->|UPDATE or DELETE| Impact[Impact: integrity loss, audit tampering]
 ```
 
 ## Vulnerable patterns to look for in DCS

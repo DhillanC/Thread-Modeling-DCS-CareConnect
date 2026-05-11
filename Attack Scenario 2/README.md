@@ -28,13 +28,22 @@ Why this scenario matters: data-lake credentials are often broader than app DB c
 
 ```mermaid
 flowchart LR
-    A[Recon<br/>Leaked IaC repo,<br/>misconfigured S3] -->|Token / key found| B[Initial Access<br/>aws-cli with stolen creds]
-    B -->|Persistence:<br/>add admin policy| C[Privilege Escalation<br/>iam:PassRole abuse]
-    C -->|Disable CloudTrail| D[Defense Evasion]
-    D -->|List buckets / glue tables| E[Discovery]
-    E -->|GetObject PHI<br/>recursive| F[Collection]
-    F -->|Cross-account copy| G[Exfiltration<br/>attacker S3]
-    G -->|Optional| H[Impact<br/>destroy logs / encrypt]
+    style Recon fill:#0037b8,stroke:#000,stroke-width:2px,color:#fff
+    style InitialAccess fill:#F5B041,stroke:#000,stroke-width:2px
+    style PrivEsc fill:#EB984E,stroke:#000,stroke-width:2px
+    style DefenseEvasion fill:#E59866,stroke:#000,stroke-width:2px
+    style Discovery fill:#DC7633,stroke:#000,stroke-width:2px
+    style Collection fill:#CA6F1E,stroke:#000,stroke-width:2px,color:#fff
+    style Exfiltration fill:#BA4A00,stroke:#000,stroke-width:2px,color:#fff
+    style Impact fill:#8a0111,stroke:#000,stroke-width:2px,color:#fff
+
+    Recon[Recon: leaked IaC repo, misconfigured S3] -->|Token or key found| InitialAccess[Initial Access: aws-cli with stolen creds]
+    InitialAccess -->|Persistence, add admin policy| PrivEsc[Privilege Escalation: iam PassRole abuse]
+    PrivEsc -->|Disable CloudTrail| DefenseEvasion[Defense Evasion]
+    DefenseEvasion -->|List buckets and glue tables| Discovery[Discovery]
+    Discovery -->|GetObject PHI recursive| Collection[Collection]
+    Collection -->|Cross-account copy| Exfiltration[Exfiltration: attacker S3]
+    Exfiltration -->|Optional| Impact[Impact: destroy logs, encrypt]
 ```
 
 ## Prerequisites the attacker must hit

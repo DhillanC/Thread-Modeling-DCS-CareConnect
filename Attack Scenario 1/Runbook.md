@@ -44,14 +44,14 @@ Detection, triage and response for the kill-chain documented in `README.md` (Rec
 
 ```mermaid
 flowchart TD
-    A[Alert fired] --> B{Phishing wave?}
-    B -- "Email gateway / DMARC" --> C[Run #1: Phishing-wave response]
-    B -- "EDR / IdP anomaly" --> D{Credential compromise indicators?}
-    D -- "Yes" --> E[Run #2: Credential-compromise response]
-    D -- "No" --> F[Run #3: Endpoint malware investigation]
-    E --> G{Lateral movement / data access?}
-    G -- "Yes" --> H[Run #4: Data-exfil response<br/>+ Privacy Office notify]
-    G -- "No" --> I[Containment + monitor + close]
+    Alert[Alert fired] --> Q1{Phishing wave?}
+    Q1 -->|Email gateway or DMARC| Run1[Run 1: Phishing-wave response]
+    Q1 -->|EDR or IdP anomaly| Q2{Credential compromise indicators?}
+    Q2 -->|Yes| Run2[Run 2: Credential-compromise response]
+    Q2 -->|No| Run3[Run 3: Endpoint malware investigation]
+    Run2 --> Q3{Lateral movement or data access?}
+    Q3 -->|Yes| Run4[Run 4: Data-exfil response, Privacy Office notify]
+    Q3 -->|No| Close[Containment, monitor, close]
 ```
 
 ## Run #1 — Phishing wave response

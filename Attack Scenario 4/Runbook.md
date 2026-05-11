@@ -27,16 +27,16 @@ Insider scenarios are detection-heavy, not prevention-heavy. Targets are measure
 
 ```mermaid
 flowchart TD
-    A[UEBA / DLP / HR signal] --> B{Plausibly legitimate?}
-    B -- "Yes — known project" --> C[Document context, lower priority,<br/>continue monitoring]
-    B -- "Unclear" --> D[Run #1: Discreet investigation]
-    B -- "No — clear violation" --> E[Run #2: Containment + Legal]
-    D --> F{Evidence of exfil?}
-    F -- "No" --> C
-    F -- "Yes" --> E
-    E --> G{PHI or IP material?}
-    G -- "PHI" --> H[HIPAA Breach Notification flow]
-    G -- "IP only" --> I[Legal-led IP recovery flow]
+    Signal[UEBA, DLP, HR signal] --> Q1{Plausibly legitimate?}
+    Q1 -->|Yes, known project| Lower[Document context, lower priority, continue monitoring]
+    Q1 -->|Unclear| Run1[Run 1: Discreet investigation]
+    Q1 -->|No, clear violation| Run2[Run 2: Containment and Legal]
+    Run1 --> Q2{Evidence of exfil?}
+    Q2 -->|No| Lower
+    Q2 -->|Yes| Run2
+    Run2 --> Q3{PHI or IP material?}
+    Q3 -->|PHI| Breach[HIPAA Breach Notification flow]
+    Q3 -->|IP only| Recovery[Legal-led IP recovery flow]
 ```
 
 ## Run #1 — Discreet investigation

@@ -24,14 +24,14 @@
 
 ```mermaid
 flowchart TD
-    A[Alert: SQLi indicator] --> B{WAF blocked the request?}
-    B -- "Yes" --> C[Run #1: Probing — investigate, monitor]
-    B -- "No" --> D{Anomalous DB query or DLP signal?}
-    D -- "Yes" --> E[Run #2: Suspected exploit]
-    D -- "No" --> F[False positive — tune detection]
-    E --> G{PHI exfiltrated?}
-    G -- "Yes" --> H[Run #3: Data-exfil + HIPAA Breach flow]
-    G -- "No" --> I[Contain endpoint + patch + close]
+    Alert[Alert: SQLi indicator] --> Q1{WAF blocked the request?}
+    Q1 -->|Yes| Run1[Run 1: Probing, investigate, monitor]
+    Q1 -->|No| Q2{Anomalous DB query or DLP signal?}
+    Q2 -->|Yes| Run2[Run 2: Suspected exploit]
+    Q2 -->|No| FalsePos[False positive, tune detection]
+    Run2 --> Q3{PHI exfiltrated?}
+    Q3 -->|Yes| Run3[Run 3: Data-exfil and HIPAA Breach flow]
+    Q3 -->|No| Close[Contain endpoint, patch, close]
 ```
 
 ## Run #1 — Probing investigation

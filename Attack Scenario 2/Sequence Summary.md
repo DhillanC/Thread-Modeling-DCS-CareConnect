@@ -9,26 +9,26 @@ An attacker discovers a developer's personal repo contains a `.env.backup` with 
 ```mermaid
 sequenceDiagram
     participant Att as Attacker
-    participant Recon as OSINT / GitHub
+    participant Recon as OSINT GitHub
     participant AWS as DCS AWS account
     participant CT as CloudTrail
-    participant S3 as PHI / Analytics S3
+    participant S3 as Analytics S3
     participant ExfilS3 as Attacker S3
 
-    Att->>Recon: Search public repos for *.env, AWS_*
-    Recon-->>Att: Leaked AWS_ACCESS_KEY (T1552.001)
-    Att->>AWS: sts:GetCallerIdentity (T1078.004)
-    AWS-->>Att: Identity confirmed, role=ci-deploy
-    Att->>AWS: iam:CreateAccessKey for self (T1098.001)
-    Att->>AWS: iam:AttachRolePolicy AdministratorAccess (T1098.003)
-    Att->>AWS: cloudtrail:StopLogging (T1562.008)
-    AWS-->>CT: Trail stopped — gap begins
-    Att->>AWS: s3:ListBuckets (T1580)
-    AWS-->>Att: dcs-phi-analytics, dcs-phi-attachments, ...
-    Att->>S3: s3:GetObject --recursive (T1530)
+    Att->>Recon: Search public repos for env files and AWS keys
+    Recon-->>Att: Leaked AWS access key T1552.001
+    Att->>AWS: sts GetCallerIdentity T1078.004
+    AWS-->>Att: Identity confirmed role ci-deploy
+    Att->>AWS: iam CreateAccessKey for self T1098.001
+    Att->>AWS: iam AttachRolePolicy AdministratorAccess T1098.003
+    Att->>AWS: cloudtrail StopLogging T1562.008
+    AWS-->>CT: Trail stopped, gap begins
+    Att->>AWS: s3 ListBuckets T1580
+    AWS-->>Att: dcs-phi-analytics, dcs-phi-attachments
+    Att->>S3: s3 GetObject recursive T1530
     S3-->>Att: PHI rows streamed
-    Att->>ExfilS3: s3:PutObject cross-account (T1567.002)
-    Att->>AWS: cloudtrail:DeleteTrail (T1485) [optional]
+    Att->>ExfilS3: s3 PutObject cross-account T1567.002
+    Att->>AWS: cloudtrail DeleteTrail T1485 optional
 ```
 
 ## Detection opportunities (in order)

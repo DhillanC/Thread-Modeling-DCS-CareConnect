@@ -28,15 +28,15 @@
 
 ```mermaid
 flowchart TD
-    A[Alert: cloud credential anomaly] --> B{Source identity known?}
-    B -- "CI / service role" --> C[Run #1: Service-credential abuse]
-    B -- "Human IAM user" --> D[Run #2: Human-cred compromise]
-    C --> E{CloudTrail tampered?}
-    D --> E
-    E -- "Yes (StopLogging)" --> F[Severity SEV-1<br/>Run #3: Logging-compromise]
-    E -- "No" --> G{Bulk PHI read?}
-    G -- "Yes" --> H[Run #4: Data-exfil + HIPAA Breach flow]
-    G -- "No" --> I[Contain + monitor + close]
+    Alert[Alert: cloud credential anomaly] --> Q1{Source identity known?}
+    Q1 -->|CI or service role| Run1[Run 1: Service-credential abuse]
+    Q1 -->|Human IAM user| Run2[Run 2: Human-cred compromise]
+    Run1 --> Q2{CloudTrail tampered?}
+    Run2 --> Q2
+    Q2 -->|Yes, StopLogging| Run3[Severity SEV-1, Run 3: Logging-compromise]
+    Q2 -->|No| Q3{Bulk PHI read?}
+    Q3 -->|Yes| Run4[Run 4: Data-exfil and HIPAA Breach flow]
+    Q3 -->|No| Close[Contain, monitor, close]
 ```
 
 ## Run #1 — Service-credential abuse

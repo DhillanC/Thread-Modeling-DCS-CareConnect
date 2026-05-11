@@ -12,22 +12,22 @@ sequenceDiagram
     participant WAF
     participant API as API gateway
     participant App as Backend
-    participant DB as PostgreSQL (PHI)
+    participant DB as PostgreSQL PHI
     participant Audit as Audit log
 
-    Att->>WAF: GET /api/patients/search?q=' OR 1=1--
-    WAF-->>Att: 403 (managed SQLi rule)
-    Att->>WAF: GET /api/patients/search?q=' OR 1=1/**/--
+    Att->>WAF: Search request with quote OR 1=1 comment
+    WAF-->>Att: 403 managed SQLi rule
+    Att->>WAF: Search request with comment-evasion payload
     Note over WAF: Bypass via comment-evasion
     WAF->>API: forwards
-    API->>App: forwards (auth: session token)
-    App->>DB: SELECT * FROM patients WHERE name LIKE '%' OR 1=1/**/--%'
+    API->>App: forwards with session token
+    App->>DB: SELECT all from patients with crafted LIKE
     DB-->>App: full table
     App-->>Att: 200 OK with full table dump
-    App->>Audit: log entry — but only as "search performed"
+    App->>Audit: log entry, only as search performed
 
     Att->>App: Page UNION extraction
-    App->>DB: SELECT name, ssn, dob FROM patients UNION SELECT NULL,NULL,NULL...
+    App->>DB: SELECT name ssn dob from patients UNION SELECT NULL
     DB-->>App: rows
     App-->>Att: rows streamed in response body
 ```

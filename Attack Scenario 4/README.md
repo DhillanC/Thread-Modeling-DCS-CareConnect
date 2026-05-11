@@ -32,12 +32,19 @@ Insider scenarios don't map cleanly to the external kill chain; the canonical mo
 
 ```mermaid
 flowchart LR
-    A[Motivation /<br/>grievance] -->|HR signal — out of scope| B[Planning<br/>Probe access,<br/>identify valuable artifacts]
-    B -->|Stage to personal area| C[Pre-positioning<br/>Local zip, drive mount]
-    C -->|Approved channel —<br/>email / share| D1[Exfil via approved channel]
-    C -->|Shadow channel —<br/>personal cloud, USB, LLM paste| D2[Exfil via shadow channel]
-    D1 --> E[Cover<br/>Clean local artifacts]
-    D2 --> E
+    style Motivation fill:#7f8c8d,stroke:#000,stroke-width:2px,color:#fff
+    style Planning fill:#F5B041,stroke:#000,stroke-width:2px
+    style PrePositioning fill:#EB984E,stroke:#000,stroke-width:2px
+    style ApprovedExfil fill:#DC7633,stroke:#000,stroke-width:2px
+    style ShadowExfil fill:#CA6F1E,stroke:#000,stroke-width:2px,color:#fff
+    style Cover fill:#8a0111,stroke:#000,stroke-width:2px,color:#fff
+
+    Motivation[Motivation, grievance] -->|HR signal, out of scope| Planning[Planning: probe access, identify valuable artifacts]
+    Planning -->|Stage to personal area| PrePositioning[Pre-positioning: local zip, drive mount]
+    PrePositioning -->|Approved channel, email, share| ApprovedExfil[Exfil via approved channel]
+    PrePositioning -->|Shadow channel, personal cloud, USB, LLM paste| ShadowExfil[Exfil via shadow channel]
+    ApprovedExfil --> Cover[Cover: clean local artifacts]
+    ShadowExfil --> Cover
 ```
 
 ## Most likely controls today (assumed)

@@ -8,22 +8,22 @@ An analyst with legitimate access to the analytics data lake decides to leave fo
 
 ```mermaid
 sequenceDiagram
-    participant Ins as Insider (authorized)
+    participant Ins as Insider authorized
     participant WS as Managed workstation
     participant Lake as Analytics S3
     participant Vault as Model registry
     participant Cloud as Personal cloud storage
     participant Git as Personal GitHub
 
-    Note over Ins: Decision to leave (T-14 days)
-    Ins->>Lake: Daily-pattern: pull 200MB datasets (T1213)
+    Note over Ins: Decision to leave at T minus 14 days
+    Ins->>Lake: Daily-pattern, pull 200MB datasets T1213
     Note over Lake: Within normal envelope
-    Ins->>Vault: Pull last 6 model versions (T1213)
-    Ins->>WS: Stage on local disk, zip nightly (T1074)
-    Ins->>Cloud: Upload via browser to personal Drive (T1567.002)
-    Ins->>Git: Push private repo to personal account (T1567.001)
+    Ins->>Vault: Pull last 6 model versions T1213
+    Ins->>WS: Stage on local disk, zip nightly T1074
+    Ins->>Cloud: Upload via browser to personal Drive T1567.002
+    Ins->>Git: Push private repo to personal account T1567.001
     Note over Ins: Cleanup
-    Ins->>WS: Delete staged files (T1070.004)
+    Ins->>WS: Delete staged files T1070.004
     Note over Ins: Resignation announced
 ```
 
