@@ -65,3 +65,4 @@
     BackendServer->>CnCServer: Actions performed
 
     deactivate Attacker
+```
