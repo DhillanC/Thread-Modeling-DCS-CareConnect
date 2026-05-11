@@ -1,5 +1,5 @@
 <p align="left">
-  <img src="Archive\dcs_logo.png" alt="DCS Logo" width="500"/>
+  <img src="Archive/dcs_logo.png" alt="DCS Logo" width="500"/>
 </p>
 
 # Project Summary

@@ -48,35 +48,25 @@ With access to the DCS Health 360 application, the attacker can exfiltrate sensi
 
 
 ```mermaid
-
 flowchart LR
+    A[Reconnaissance<br/>OSINT on DCS staff,<br/>LinkedIn, GitHub repos] -->|Identify admin targets| B[Weaponization<br/>AI-generated phishing<br/>+ payload]
+    B -->|Craft malicious link / attachment| C[Delivery<br/>Spear-phishing email<br/>to DCS admin]
+    C -->|User clicks link / opens attachment| D[Exploitation<br/>Credential harvest<br/>or browser RCE]
+    D -->|Valid AWS / app admin creds| E[Installation<br/>Backdoor user,<br/>persistence on backend]
+    E -->|Outbound C2 channel established| F[Command & Control<br/>HTTPS beacon to attacker C2]
+    F -->|Issue commands<br/>lateral movement| G[Actions on Objectives<br/>Exfil PHI,<br/>manipulate records,<br/>deploy ransomware]
 
-
-
-
-
-    A[GitHub Repos] --> B{CI/CD Pipeline GH Actions}
-
-    A[Reconnaissance] -->|Identify target| B
-
-    B[Reconnaissance] -->|Gather information| B
-
-    B[Weaponization] -->|Craft malicious payload| D
-
-    D[Delivery] -->|Send phishing email| D
-
-    D[Delivery] -->|Trick user to download payload| D
-
-    D[Exploitation] -->|Execute payload| D
-
-    D[Exploitation] -->|Gain access to web server| H
-
-    H[Installation] -->|Install backdoor| H
-
-    H[Installation] -->|Establish persistence| H
-
-    H[Command and Control] -->|Communicate with C&C server| H
-
-    H[Command and Control] -->|Issue commands| L
-
-    H[Actions on Objectives] -->|Steal sensitive data| M
+    classDef recon fill:#0037b8,stroke:#000,color:#fff;
+    classDef weap fill:#F5B041,stroke:#000;
+    classDef deliv fill:#EB984E,stroke:#000;
+    classDef expl fill:#E59866,stroke:#000;
+    classDef install fill:#DC7633,stroke:#000;
+    classDef c2 fill:#CA6F1E,stroke:#000,color:#fff;
+    classDef act fill:#BA4A00,stroke:#000,color:#fff;
+    class A recon;
+    class B weap;
+    class C deliv;
+    class D expl;
+    class E install;
+    class F c2;
+    class G act;
